@@ -189,6 +189,8 @@ const User = () => {
             let special = snapshot.val().specialized;
             let totalS = (special == 'yes')?(snapshot.val().totalStudents):0
             let cost = total * 30;
+            console.log("here1", snapshot.val());
+            console.log("here2", snapshot.val().schoolName);
             emailjs.send("service_0jvbh5s","template_oqjr79r",{
                 school_name: snapshot.val().schoolName,
                 id: snapshot.val().key,
@@ -200,13 +202,13 @@ const User = () => {
                 cost: cost,
                 reason: values['reason'],
             }, 'user_qSoIlO4sqTMkv760VSTGg');
+
+            rootRef.child(params.get('email').replace(/\./g,',')).set({
+                scheduled: false,
+                confirmed: false
+            });
         });
         
-        rootRef.child(params.get('email').replace(/\./g,',')).set({
-            scheduled: false,
-            confirmed: false
-        });
-
         notification.open({
             message: 'Notification',
             description: '✅ Cancelled!',
@@ -473,7 +475,7 @@ const User = () => {
                         </Form.Item>
 
                         <Form.Item name="endDate" label="End Date" {...config}>
-                            <DatePicker disabled={typeof startC == 'undefined'} disabledDate = {disabledEndDate}/>
+                            <DatePicker defaultValue={moment(end, dateFormat)} disabled={typeof startC == 'undefined'} disabledDate = {disabledEndDate}/>
                         </Form.Item>
 
                         <Form.Item
