@@ -289,19 +289,6 @@ const User = () => {
             </Form.Item>
 
             <Form.Item
-                name="postalCode"
-                label="Postal Code"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your postal code!',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
                 name="schoolType"
                 label="School Type"
                 rules={[
@@ -364,7 +351,7 @@ const User = () => {
                 :<span></span>
             }
 
-            {(type == 'visiting')
+            {(typeE == 'visiting')
                 ?<div>
                     <Form.Item
                         name="visitingSchool"
