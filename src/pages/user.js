@@ -182,10 +182,27 @@ const User = () => {
     }
 
     const onFinishCancell = (values) => {
-        console.log('Success:', values);
         const params = new URLSearchParams(location.search);
-        let interestsRef = firebase.database().ref('interests');
-        interestsRef.child(params.get('email').replace(/\./g,',')).set({
+        console.log('Success:', values);
+        let rootRef = firebase.database().ref('interests');
+        rootRef.child(params.get('email').replace(/\./g,',')).once('value', snapshot => {
+            let special = snapshot.val().specialized;
+            let totalS = (special == 'yes')?(snapshot.val().totalStudents):0
+            let cost = total * 30;
+            emailjs.send("service_0jvbh5s","template_oqjr79r",{
+                school_name: snapshot.val().schoolName,
+                id: snapshot.val().key,
+                school_type: snapshot.val().schoolType,
+                start_date: snapshot.val().confirmedStartDate,
+                end_date: snapshot.val().confirmedEndDate,
+                specialized: snapshot.val().specialized,
+                total: totalS,
+                cost: cost,
+                reason: values['reason'],
+            }, 'user_qSoIlO4sqTMkv760VSTGg');
+        });
+        
+        rootRef.child(params.get('email').replace(/\./g,',')).set({
             scheduled: false,
             confirmed: false
         });
@@ -416,7 +433,7 @@ const User = () => {
                 }}
             >
                 <Button type="primary" htmlType="submit">
-                    Express
+                    Express interest
                 </Button>
             </Form.Item>
                 </Form>)
@@ -507,7 +524,7 @@ const User = () => {
                             }}
                         >
                             <Button type="primary" htmlType="submit">
-                                Confirm
+                                Confirm schedule
                             </Button>
                         </Form.Item>
                     </Form>
@@ -597,7 +614,7 @@ const User = () => {
                             }}
                         >
                             <Button type="primary" htmlType="submit">
-                                Cancell
+                                Cancell schedule
                             </Button>
                         </Form.Item>
                     </Form>  

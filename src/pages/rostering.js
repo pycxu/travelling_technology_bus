@@ -59,11 +59,14 @@ const Rostering = () => {
                 endDate: values['endDate'].format('YYYY-MM-DD')
             });
 
+            console.log("obj1", Object.values(snapshot.val())[0].schoolName);
+            console.log("obj2", Object.values(snapshot.val())[0].schoolType);
+
             emailjs.send("service_sep9kdx","template_ig07qp8",{
                 school_name: Object.values(snapshot.val())[0].schoolName,
                 id: Object.values(snapshot.val())[0].key,
                 address: Object.values(snapshot.val())[0].address,
-                school_type: Object.values(snapshot.val())[0].type,
+                school_type: Object.values(snapshot.val())[0].schoolType,
                 start_date: values['startDate'].format('YYYY-MM-DD'),
                 end_date: values['endDate'].format('YYYY-MM-DD'),
                 school_email: Object.keys(snapshot.val())[0].replace(/\,/g,'.'),

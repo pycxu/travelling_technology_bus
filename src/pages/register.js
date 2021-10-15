@@ -9,29 +9,26 @@ const Register = () => {
     console.log('Success:', values);
 
     var rootRef = firebase.database().ref('schools');
-    rootRef.child(values['email'].replace(/\./g,',')).once('value', snapshot => {
-        if(!snapshot.exists()){
-            rootRef.child(values['email'].replace(/\./g,',')).set({
-                schoolName: values['schoolName'],
-                schoolContactName: values['schoolContactName'],
-                schoolContactNumber: values['schoolContactNumber'],
-                email: values['email'],
-                password: values['password']
-            });
-            let interestsRef = firebase.database().ref('interests');
-            interestsRef.child(values['email'].replace(/\./g,',')).set({
-                scheduled: false,
-                confirmed: false
-            });
+    rootRef.child(values['email'].replace(/\./g,',')).set({
+        schoolName: values['schoolName'],
+        schoolContactName: values['schoolContactName'],
+        schoolContactNumber: values['schoolContactNumber'],
+        email: values['email'],
+        password: values['password']
+    });
+    let interestsRef = firebase.database().ref('interests');
+    interestsRef.child(values['email'].replace(/\./g,',')).set({
+        scheduled: false,
+        confirmed: false
+    });
 
-            notification.open({
-                message: 'Notification',
-                description: '✅ Registered successfully!',
-            });
-        }
+    notification.open({
+        message: 'Notification',
+        description: '✅ Registered successfully!',
+    });
+    
 
-        history.push('/login');
-    })
+    history.push('/login');
 
 
     };
